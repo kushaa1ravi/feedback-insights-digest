@@ -1,0 +1,23 @@
+# Runs n8n on your own computer at http://localhost:5678
+#
+#   docker compose up -d      start
+#   docker compose logs -f    watch the logs
+#   docker compose down       stop (your data stays in the n8n_data volume)
+#
+# Workflows, credentials and the feedback data table are kept in the n8n_data volume.
+
+services:
+  n8n:
+    image: n8nio/n8n:2.42.3 # the version this workflow was built and tested on
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5678:5678" # reachable from this computer only
+    environment:
+      # Sets the default timezone for schedules and dates. Change to your own.
+      - GENERIC_TIMEZONE=Asia/Kolkata
+      - TZ=Asia/Kolkata
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:
